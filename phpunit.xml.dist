@@ -23,6 +23,12 @@
         </testsuite>
     </testsuites>
 
+    <groups>
+        <exclude>
+            <group>integration</group>
+        </exclude>
+    </groups>
+
     <coverage processUncoveredFiles="true">
         <include>
             <directory suffix=".php">src</directory>
@@ -32,6 +38,7 @@
     <listeners>
         <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
     </listeners>
+
 
     <!-- Run `composer require symfony/panther` before enabling this extension -->
     <!--

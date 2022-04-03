@@ -59,20 +59,14 @@ class RefreshStockProfileCommand extends Command
 
         if ($stockProfile->getStatusCode() !== 200) {
 
-            $output->writeln($stockProfile->getContent());
-
-            return Command::FAILURE;
+            // Handle non 200 status code responses
         }
 
-        /** @var Stock $stock */
         $stock = $this->serializer->deserialize($stockProfile->getContent(), Stock::class, 'json');
 
         $this->entityManager->persist($stock);
 
         $this->entityManager->flush();
-
-
-        $output->writeln($stock->getShortName() . ' has been saved / updated.');
 
         return Command::SUCCESS;
     }
