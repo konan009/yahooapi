@@ -51,3 +51,7 @@
 /.web-server-pid
 
 .env
+
+
+/postgres/*
+/postgres/*~

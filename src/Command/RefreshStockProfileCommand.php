@@ -19,17 +19,17 @@ class RefreshStockProfileCommand extends Command
     /**
      * @var EntityManagerInterface
      */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     /**
      * @var FinanceApiClientInterface
      */
-    private $financeApiClient;
+    private FinanceApiClientInterface $financeApiClient;
 
     /**
      * @var SerializerInterface
      */
-    private $serializer;
+    private SerializerInterface $serializer;
 
 
     public function __construct(EntityManagerInterface $entityManager,
@@ -59,14 +59,19 @@ class RefreshStockProfileCommand extends Command
 
         if ($stockProfile->getStatusCode() !== 200) {
 
-            // Handle non 200 status code responses
+            $output->writeln($stockProfile->getContent());
+
+            return Command::FAILURE;
         }
 
+        /** @var Stock $stock */
         $stock = $this->serializer->deserialize($stockProfile->getContent(), Stock::class, 'json');
 
         $this->entityManager->persist($stock);
 
         $this->entityManager->flush();
+
+        $output->writeln($stock->getShortName() . ' has been saved / updated.');
 
         return Command::SUCCESS;
     }
